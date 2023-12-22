@@ -199,7 +199,7 @@ def generate():
                         field_string = field_string + " OR "
                     if key == 'SIMID':
                         field = "*" + field
-                    field_string = field_string + str(key) + ".value.keyword: { \"value:\"" + str(field) + "}"
+                    field_string = field_string + str(key) + ".value:" + str(field)
                     triggerOR = True
                 field_string = field_string + ")"
                 query_string = query_string + field_string
@@ -208,14 +208,11 @@ def generate():
     must_string = [
         {
             "query_string": {
-                "query": {
-                    "term": {query_string}
-                },
+                "query": query_string,
                 "analyze_wildcard": True
             }
         }
     ]
-    print(str(must_string))
     # Making the query
     query = {
         "bool": {
